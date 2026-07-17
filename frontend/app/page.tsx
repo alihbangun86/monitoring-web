@@ -29,11 +29,11 @@ interface Service {
   url: string;
   status: string;
   status_code: number | null;
-  response_time: number |null;
+  response_time: number | null;
   ping_ms: number | null;
+  jitter_ms: number | null;
   checked_at: string;
 }
-
 export default function Home() {
 
   const [summary, setSummary] = useState<Summary>({

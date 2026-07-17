@@ -26,17 +26,12 @@ interface Service {
   id: number;
   name: string;
   url: string;
-
   status: string;
-  status_code: number | null;
-
   ping_ms: number | null;
   jitter_ms: number | null;
   packet_loss: number | null;
   response_time: number | null;
-
-  error_message: string | null;
-
+  status_code: number | null;
   checked_at: string;
 }
 
