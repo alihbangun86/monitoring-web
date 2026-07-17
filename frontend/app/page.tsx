@@ -48,6 +48,7 @@ export default function Home() {
     {
       time: string;
       ping: number;
+      jitter: number;
       response: number;
     }[]
   >([]);
