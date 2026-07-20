@@ -1,13 +1,11 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-
-import Navbar from "@/components/Navbar";
-import Sidebar from "@/components/Sidebar";
 import SummaryCard from "@/components/SummaryCard";
 import ServiceTable from "@/components/ServiceTable";
 import ResponseChart from "@/components/ResponseChart";
 import ServiceForm from "@/components/ServiceForm";
+import { useRouter } from "next/navigation";
 
 import {
   getSummary,
@@ -36,6 +34,14 @@ interface Service {
   checked_at: string;
 }
 export default function Home() {
+
+  const router = useRouter();
+
+  const logout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("admin");
+    router.replace("/auth/login");
+  };
 
   const [summary, setSummary] = useState<Summary>({
     total: 0,
@@ -83,25 +89,22 @@ export default function Home() {
     }
   };
 
-  useEffect(() => {
+useEffect(() => {
+  const token = localStorage.getItem("token");
 
-    loadDashboard();
+  if (!token) {
+    router.replace("/auth/login");
+    return;
+  }
 
-    socket.on("dashboard-update", () => {
+  loadDashboard();
 
-      console.log("Dashboard Updated");
+  socket.on("dashboard-update", loadDashboard);
 
-      loadDashboard();
-
-    });
-
-    return () => {
-
-      socket.off("dashboard-update");
-
-    };
-
-  }, []);
+  return () => {
+    socket.off("dashboard-update", loadDashboard);
+  };
+}, [router]);
 
   const filteredServices = useMemo(() => {
 
@@ -159,13 +162,29 @@ export default function Home() {
   }, [services, search, filter, sortBy]);
 
     return (
-    <div className="flex min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-gray-100">
 
-      <div className="flex-1">
+      <div className="bg-white shadow px-6 py-4 flex justify-between items-center">
 
-        <Navbar />
+        <div>
+          <h1 className="text-2xl font-bold">
+            Monitoring Dashboard
+          </h1>
+          <p className="text-gray-500">
+            Website Monitoring System
+          </p>
+        </div>
 
-        <main className="p-6">
+        <button
+          onClick={logout}
+          className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg"
+        >
+          Logout
+        </button>
+
+      </div>
+
+      <div className="p-6">
 
           {/* Form Tambah Service */}
           <div className="mb-6">
@@ -333,8 +352,6 @@ export default function Home() {
             </div>
 
           </div>
-
-        </main>
 
       </div>
 

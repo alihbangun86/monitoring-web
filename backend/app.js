@@ -7,6 +7,7 @@ require("./scheduler/monitoringCron");
 
 const serviceRoutes = require("./routes/serviceRoutes");
 const dashboardRoutes = require("./routes/dashboardRoutes");
+const authRoutes = require("./routes/authRoutes");
 
 const socket = require("./socket/socket");
 
@@ -15,6 +16,8 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// Routes
+app.use("/auth", authRoutes);
 app.use("/services", serviceRoutes);
 app.use("/dashboard", dashboardRoutes);
 
@@ -22,6 +25,6 @@ const server = http.createServer(app);
 
 socket.init(server);
 
-server.listen(process.env.PORT, () => {
-  console.log("Server Running");
+server.listen(process.env.PORT, "0.0.0.0", () => {
+  console.log(`Server Running on port ${process.env.PORT}`);
 });
