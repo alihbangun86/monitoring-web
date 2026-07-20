@@ -26,12 +26,14 @@ interface Service {
   id: number;
   name: string;
   url: string;
+  ip: string | null;
   status: string;
+  status_code: number | null;
   ping_ms: number | null;
   jitter_ms: number | null;
   packet_loss: number | null;
   response_time: number | null;
-  status_code: number | null;
+  error_message: string | null;
   checked_at: string;
 }
 
@@ -251,8 +253,6 @@ export default function ServiceDetail() {
 
     <div className="flex min-h-screen bg-gray-100">
 
-      <Sidebar />
-
       <div className="flex-1">
 
         <Navbar />
@@ -290,6 +290,10 @@ export default function ServiceDetail() {
                 {service.url}
 
               </a>
+
+              <p className="text-sm text-slate-500">
+                IP Address : {service.ip ?? "-"}
+              </p>
 
             </div>
 

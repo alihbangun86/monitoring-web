@@ -8,6 +8,7 @@ interface Service {
   id: number;
   name: string;
   url: string;
+  ip: string | null;
   status: string;
   ping_ms: number | null;
   jitter_ms: number | null;
@@ -329,10 +330,14 @@ export default function ServiceTable({
                     href={service.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-blue-600 hover:text-blue-800 hover:underline whitespace-nowrap"
+                    className="text-blue-600 hover:text-blue-800 hover:underline break-all"
                   >
                     {service.url}
                   </a>
+
+                  <div className="mt-1 text-xs text-slate-500">
+                    IP : {service.ip ?? "-"}
+                  </div>
 
                 </td>
 

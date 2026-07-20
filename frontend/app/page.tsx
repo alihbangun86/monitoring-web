@@ -27,6 +27,7 @@ interface Service {
   id: number;
   name: string;
   url: string;
+  ip: string | null;
   status: string;
   status_code: number | null;
   response_time: number | null;
@@ -159,8 +160,6 @@ export default function Home() {
 
     return (
     <div className="flex min-h-screen bg-gray-100">
-
-      <Sidebar />
 
       <div className="flex-1">
 

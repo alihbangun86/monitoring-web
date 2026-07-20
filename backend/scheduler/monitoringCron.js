@@ -29,11 +29,9 @@ cron.schedule("* * * * *", async () => {
       })
     );
 
-    // Kirim event ke semua client
     getIO().emit("dashboard-update");
 
     console.log("Dashboard realtime updated.");
-
     console.log("========================================");
     console.log("Monitoring selesai.");
     console.log("========================================\n");

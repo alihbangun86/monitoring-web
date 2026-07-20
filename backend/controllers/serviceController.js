@@ -1,4 +1,5 @@
 const db = require("../config/database");
+const { getIPAddress } = require("../services/dnsService");
 
 // GET
 exports.getServices = async (req, res) => {
@@ -7,7 +8,19 @@ exports.getServices = async (req, res) => {
         "SELECT * FROM services ORDER BY id DESC"
     );
 
-    res.json(rows);
+    const services = await Promise.all(
+
+        rows.map(async (service) => ({
+
+            ...service,
+
+            ip: await getIPAddress(service.url)
+
+        }))
+
+    );
+
+    res.json(services);
 
 };
 
@@ -88,6 +101,8 @@ exports.getServiceDetail = async (req, res) => {
                 message: "Service tidak ditemukan"
             });
         }
+
+        service.ip = await getIPAddress(service.url);
 
         const [[statistics]] = await db.query(`
             SELECT

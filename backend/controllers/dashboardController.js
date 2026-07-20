@@ -1,4 +1,5 @@
 const db = require("../config/database");
+const { getIPAddress } = require("../services/dnsService");
 
 // =====================
 // Summary Dashboard
@@ -84,7 +85,14 @@ exports.getServiceStatus = async (req, res) => {
       ORDER BY s.name
     `);
 
-    res.json(rows);
+    const services = await Promise.all(
+      rows.map(async (service) => ({
+        ...service,
+        ip: await getIPAddress(service.url)
+      }))
+    );
+
+    res.json(services);
 
   } catch (err) {
 
