@@ -9,7 +9,6 @@ function init(server) {
       methods: ["GET", "POST"],
     },
   });
-}
 
   io.on("connection", (socket) => {
     console.log("Client Connected:", socket.id);

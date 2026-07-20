@@ -125,9 +125,9 @@ exports.getChart = async (req, res) => {
 
       WHERE checked_at >= NOW() - INTERVAL 30 MINUTE
 
-      GROUP BY DATE_FORMAT(checked_at,'%H:%i')
+      GROUP BY time
 
-      ORDER BY checked_at ASC
+      ORDER BY time ASC
     `);
 
     res.json(rows);
@@ -136,7 +136,9 @@ exports.getChart = async (req, res) => {
 
     console.error(err);
 
-    res.status(500).json(err);
+    res.status(500).json({
+      message: "Internal Server Error"
+    });
 
   }
 
