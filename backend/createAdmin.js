@@ -8,44 +8,39 @@ async function createAdmin() {
     const username = "admin";
     const password = "admin123";
     const fullName = "Administrator";
-    const email = "admin@monitoring.local";
 
-    // cek apakah admin sudah ada
-    const [rows] = await db.query(
-      "SELECT id FROM admins WHERE username = ?",
+    // Hash password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Hapus admin lama jika ada
+    await db.query(
+      "DELETE FROM admins WHERE username = ?",
       [username]
     );
 
-    if (rows.length > 0) {
-      console.log("Admin sudah ada.");
-      process.exit(0);
-    }
-
-    // hash password
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    // insert admin
+    // Insert admin baru
     await db.query(
-      `INSERT INTO admins
-      (username,password,full_name,email)
-      VALUES (?,?,?,?)`,
+      `
+      INSERT INTO admins
+      (username, password, full_name)
+      VALUES (?, ?, ?)
+      `,
       [
         username,
         hashedPassword,
         fullName,
-        email,
       ]
     );
 
-    console.log("=================================");
-    console.log("Admin berhasil dibuat!");
+    console.log("==================================");
+    console.log("Admin berhasil dibuat");
     console.log("Username :", username);
     console.log("Password :", password);
-    console.log("=================================");
+    console.log("==================================");
 
     process.exit(0);
-
   } catch (err) {
+    console.error("Gagal membuat admin");
     console.error(err);
     process.exit(1);
   }
