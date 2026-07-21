@@ -5,7 +5,6 @@ import SummaryCard from "@/components/SummaryCard";
 import ServiceTable from "@/components/ServiceTable";
 import ResponseChart from "@/components/ResponseChart";
 import ServiceForm from "@/components/ServiceForm";
-import { useRouter } from "next/navigation";
 
 import {
   getSummary,
@@ -34,14 +33,6 @@ interface Service {
   checked_at: string;
 }
 export default function Home() {
-
-  const router = useRouter();
-
-  const logout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("admin");
-    router.replace("/auth/login");
-  };
 
   const [summary, setSummary] = useState<Summary>({
     total: 0,
@@ -163,26 +154,6 @@ useEffect(() => {
 
     return (
     <div className="min-h-screen bg-gray-100">
-
-      <div className="bg-white shadow px-6 py-4 flex justify-between items-center">
-
-        <div>
-          <h1 className="text-2xl font-bold">
-            Monitoring Dashboard
-          </h1>
-          <p className="text-gray-500">
-            Website Monitoring System
-          </p>
-        </div>
-
-        <button
-          onClick={logout}
-          className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg"
-        >
-          Logout
-        </button>
-
-      </div>
 
       <div className="p-6">
 
