@@ -25,24 +25,18 @@ interface Service {
   id: number;
   name: string;
   url: string;
-
   ip: string | null;
-
   status: string;
-  status_code: number;
-
-  ping_ms: number;
-  jitter_ms: number;
-  response_time: number;
-
+  ping_ms: number | null;
+  jitter_ms: number | null;
+  response_time: number | null;
+  status_code: number | null;
   checked_at: string;
 
   geoInfo?: {
-    country: string;
-    region: string;
-    city: string;
-    isp: string;
+    location: string;
     organization: string;
+    isp: string;
     asn: string;
   };
 }

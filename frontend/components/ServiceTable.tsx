@@ -9,19 +9,19 @@ interface Service {
   name: string;
   url: string;
   ip: string | null;
-
-  geoInfo?: {
-    location: string;
-    organization: string;
-    asn: string;
-  };
-
   status: string;
   ping_ms: number | null;
   jitter_ms: number | null;
   response_time: number | null;
   status_code: number | null;
   checked_at: string;
+
+  geoInfo?: {
+    location: string;
+    organization: string;
+    isp: string;
+    asn: string;
+  };
 }
 
 interface Props {
