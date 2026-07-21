@@ -5,6 +5,7 @@ import SummaryCard from "@/components/SummaryCard";
 import ServiceTable from "@/components/ServiceTable";
 import ResponseChart from "@/components/ResponseChart";
 import ServiceForm from "@/components/ServiceForm";
+import { useRouter } from "next/navigation";
 
 import {
   getSummary,
@@ -33,6 +34,14 @@ interface Service {
   checked_at: string;
 }
 export default function Home() {
+
+  const router = useRouter();
+
+  const logout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("admin");
+    router.replace("/auth/login");
+  };
 
   const [summary, setSummary] = useState<Summary>({
     total: 0,
