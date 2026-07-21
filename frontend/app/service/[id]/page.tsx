@@ -85,6 +85,8 @@ export default function ServiceDetail() {
   const [statistics, setStatistics] =
     useState<Statistics | null>(null);
 
+  const [geoInfo, setGeoInfo] = useState<any>(null);
+
   const [history, setHistory] =
     useState<History[]>([]);
 
@@ -106,6 +108,8 @@ export default function ServiceDetail() {
       setStatistics(res.data.statistics);
 
       setHistory(res.data.history);
+
+      setGeoInfo(res.data.geoInfo);
 
     } catch (err) {
 
@@ -275,9 +279,7 @@ export default function ServiceDetail() {
               </Link>
 
               <h1 className="text-3xl font-bold text-gray-900 mt-2">
-
                 {service.name}
-
               </h1>
 
               <a
@@ -286,16 +288,33 @@ export default function ServiceDetail() {
                 rel="noopener noreferrer"
                 className="text-blue-600 hover:underline break-all"
               >
-
                 {service.url}
-
               </a>
 
-              <p className="text-sm text-slate-500">
-                IP Address : {service.ip ?? "-"}
+              <p className="text-sm text-slate-500 mt-2">
+                <strong>IP Address :</strong> {service.ip ?? "-"}
               </p>
 
-            </div>
+              {geoInfo && (
+                <div className="mt-3 text-sm text-slate-600 space-y-1">
+                  <p>
+                    <strong>Location :</strong>{" "}
+                    {geoInfo.location}
+                  </p>
+
+                  <p>
+                    <strong>ASN :</strong>{" "}
+                    {geoInfo.asn}
+                  </p>
+
+                  <p>
+                    <strong>Organization :</strong>{" "}
+                    {geoInfo.organization}
+                  </p>
+                </div>
+              )}
+
+            </div> {/* <-- penutup div yang hilang */}
 
             <div>
 
@@ -308,9 +327,7 @@ export default function ServiceDetail() {
                     : "bg-red-500"
                 }`}
               >
-
                 {service.status}
-
               </span>
 
             </div>

@@ -1,4 +1,5 @@
 const dns = require("dns").promises;
+const { getGeoInfo } = require("./geoService");
 
 async function getIPAddress(url) {
     try {
@@ -15,4 +16,5 @@ async function getIPAddress(url) {
 
 module.exports = {
     getIPAddress,
+    getGeoInfo,
 };

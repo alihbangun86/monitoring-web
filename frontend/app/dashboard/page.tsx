@@ -25,13 +25,26 @@ interface Service {
   id: number;
   name: string;
   url: string;
+
   ip: string | null;
+
   status: string;
-  status_code: number | null;
-  response_time: number | null;
-  ping_ms: number | null;
-  jitter_ms: number | null;
+  status_code: number;
+
+  ping_ms: number;
+  jitter_ms: number;
+  response_time: number;
+
   checked_at: string;
+
+  geoInfo?: {
+    country: string;
+    region: string;
+    city: string;
+    isp: string;
+    organization: string;
+    asn: string;
+  };
 }
 export default function Home() {
 

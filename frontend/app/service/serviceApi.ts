@@ -18,4 +18,4 @@ export const deleteService = (id: number) =>
 /* ============================= */
 
 export const getServiceDetail = (id: number) =>
-  API.get(`/services/${id}`);
+  API.get(`/${id}`);

@@ -1,5 +1,6 @@
 const db = require("../config/database");
 const { getIPAddress } = require("../services/dnsService");
+const { getGeoInfo } = require("../services/geoService");
 
 // =====================
 // Summary Dashboard
@@ -45,8 +46,11 @@ exports.getSummary = async (req, res) => {
     });
 
   } catch (err) {
+
     console.error(err);
+
     res.status(500).json(err);
+
   }
 };
 
@@ -54,6 +58,7 @@ exports.getSummary = async (req, res) => {
 // Service Status
 // =====================
 exports.getServiceStatus = async (req, res) => {
+
   try {
 
     const [rows] = await db.query(`
@@ -86,10 +91,25 @@ exports.getServiceStatus = async (req, res) => {
     `);
 
     const services = await Promise.all(
-      rows.map(async (service) => ({
-        ...service,
-        ip: await getIPAddress(service.url)
-      }))
+
+      rows.map(async (service) => {
+
+        const ip = await getIPAddress(service.url);
+
+        let geoInfo = null;
+
+        if (ip) {
+          geoInfo = await getGeoInfo(ip);
+        }
+
+        return {
+          ...service,
+          ip,
+          geoInfo,
+        };
+
+      })
+
     );
 
     res.json(services);
@@ -101,6 +121,7 @@ exports.getServiceStatus = async (req, res) => {
     res.status(500).json(err);
 
   }
+
 };
 
 // =====================
@@ -111,15 +132,15 @@ exports.getChart = async (req, res) => {
   try {
 
     const [rows] = await db.query(`
-        SELECT
-            DATE_FORMAT(checked_at,'%H:%i') AS time,
-            ROUND(AVG(ping_ms),0) AS ping,
-            ROUND(AVG(jitter_ms),0) AS jitter,
-            ROUND(AVG(response_time),0) AS response
-        FROM monitoring_logs
-        WHERE checked_at >= NOW() - INTERVAL 30 MINUTE
-        GROUP BY time
-        ORDER BY time ASC
+      SELECT
+          DATE_FORMAT(checked_at,'%H:%i') AS time,
+          ROUND(AVG(ping_ms),0) AS ping,
+          ROUND(AVG(jitter_ms),0) AS jitter,
+          ROUND(AVG(response_time),0) AS response
+      FROM monitoring_logs
+      WHERE checked_at >= NOW() - INTERVAL 30 MINUTE
+      GROUP BY time
+      ORDER BY time ASC
     `);
 
     res.json(rows);

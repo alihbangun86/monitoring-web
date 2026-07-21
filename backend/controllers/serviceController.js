@@ -1,5 +1,5 @@
 const db = require("../config/database");
-const { getIPAddress } = require("../services/dnsService");
+const { getIPAddress, getGeoInfo } = require("../services/dnsService");
 
 // GET
 exports.getServices = async (req, res) => {
@@ -103,6 +103,7 @@ exports.getServiceDetail = async (req, res) => {
         }
 
         service.ip = await getIPAddress(service.url);
+        const geoInfo = await getGeoInfo(service.ip);
 
         const [[statistics]] = await db.query(`
             SELECT
@@ -165,7 +166,8 @@ exports.getServiceDetail = async (req, res) => {
 
             statistics,
 
-            history
+            history,
+            geoInfo
 
         });
 

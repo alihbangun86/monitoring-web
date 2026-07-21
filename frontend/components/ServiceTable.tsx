@@ -9,6 +9,13 @@ interface Service {
   name: string;
   url: string;
   ip: string | null;
+
+  geoInfo?: {
+    location: string;
+    organization: string;
+    asn: string;
+  };
+
   status: string;
   ping_ms: number | null;
   jitter_ms: number | null;
@@ -336,8 +343,26 @@ export default function ServiceTable({
                   </a>
 
                   <div className="mt-1 text-xs text-slate-500">
-                    IP : {service.ip ?? "-"}
+                    <strong>IP :</strong> {service.ip ?? "-"}
                   </div>
+
+                  {service.geoInfo && (
+                    <div className="mt-2 text-xs text-slate-500 space-y-1">
+
+                      <div>
+                        <strong>Location :</strong> {service.geoInfo.location}
+                      </div>
+
+                      <div>
+                        <strong>ASN :</strong> {service.geoInfo.asn}
+                      </div>
+
+                      <div>
+                        <strong>Organization :</strong> {service.geoInfo.organization}
+                      </div>
+
+                    </div>
+                  )}
 
                 </td>
 
